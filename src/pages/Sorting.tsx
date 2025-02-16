@@ -5,7 +5,7 @@ function Sorting(): JSX.Element {
   return (
     <div>
       <h1>Algoritmos de Ordenação</h1>
-      <SortingVisualizer />
+      <SortingVisualizer/>
     </div>
   );
 }

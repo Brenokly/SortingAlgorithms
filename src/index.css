@@ -1,68 +1,182 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
+/* Reset básico */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Paleta de Cores */
+:root {
+  /* Cores principais */
+  --color-primary: #007bff; /* Azul */
+  --color-secondary: #ff6600; /* Laranja suave */
+  --color-background: #ffffff; /* Branco */
+  --color-text: #333333; /* Texto claro */
+
+  /* Cores para hover e interações */
+  --color-link: #007bff;
+  --color-button-bg: #007bff; /* Azul */
+  --color-button-hover-bg: #0056b3; /* Azul escuro para hover */
+
+  /* Cores secundárias */
+  --color-light-gray: #f4f4f4;
+  --color-dark-gray: #343a40;
+  --color-muted: #6c757d;
+}
+
+/* Quando a classe "dark-theme" estiver no body, altere as variáveis */
+body.dark-theme {
+  --color-background: #121212; /* Fundo escuro */
+  --color-text: #e0e0e0; /* Texto mais claro */
+  --color-link: #66b3ff; /* Azul claro para links */
+  --color-button-bg: #6200ea; /* Roxo suave para botões */
+  --color-button-hover-bg: #3700b3; /* Roxo mais escuro para hover */
+  --color-light-gray: #3e3e3e; /* Cinza claro */
+  --color-dark-gray: #212121; /* Cinza escuro */
+  --color-muted: #9e9e9e; /* Cor suave para textos secundários */
+}
+
+/* Corpo da página */
+body {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--color-background);
+  color: var(--color-text);
   display: flex;
-  place-items: center;
-  min-width: 320px;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
+  margin: 0;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Links */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  font-weight: 500;
 }
 
+a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Botões */
 button {
-  border-radius: 8px;
+  padding: 0.8em 1.5em;
+  background-color: var(--color-button-bg);
+  color: #fff;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  cursor: pointer;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: background-color 0.3s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+button:hover {
+  background-color: var(--color-button-hover-bg);
+}
+
+/* Estilo para seções com fundo leve (exemplo: cards, containers) */
+.section {
+  background-color: var(--color-light-gray);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Cabeçalhos */
+h1, h2, h3 {
+  color: var(--color-text); /* Garantir que os cabeçalhos fiquem visíveis no modo escuro */
+}
+
+/* Parágrafos e textos */
+p {
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+/* Estilos para a Navbar */
+nav {
+  display: flex;
+  justify-content: center;  /* Alinha os links ao centro */
+  align-items: center;      /* Alinha os itens na vertical */
+  gap: 20px;                /* Espaçamento entre os links */
+  padding: 15px 0;          /* Padding em cima e embaixo */
+  position: fixed;          /* Fixa no topo */
+  top: 0;                   /* No topo da página */
+  left: 50%;                /* Centraliza a navbar horizontalmente */
+  transform: translateX(-50%); /* Ajusta o centro absoluto */
+  width: 100%;
+  z-index: 10;              /* Garante que a navbar fique abaixo de outros conteúdos */
+  background-color: var(--color-background); /* Cor de fundo da navbar */
+  transition: background-color 0.3s ease; /* Transição suave para fundo no modo escuro/claro */
+}
+
+nav a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--color-primary);
+  transform: translateY(-3px); /* Sobe um pouco */
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Caixa de entrada e área de texto (inputs) */
+input, textarea {
+  background-color: var(--color-dark-gray);
+  color: var(--color-text);
+  border: 1px solid var(--color-light-gray);
+  padding: 0.5em;
+  border-radius: 4px;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 3px var(--color-primary);
+}
+
+/* Estilo para o ícone de alternância de tema (sol ou lua) */
+.theme-toggle {
+  position: fixed;
+  top: 20px; /* Distância do topo */
+  right: 20px; /* Distância da borda direita */
+  font-size: 30px; /* Tamanho do ícone */
+  cursor: pointer;
+  color: var(--color-text);
+  transition: transform 0.3s ease, color 0.3s ease;
+  z-index: 100; /* Garante que o ícone fique acima da navbar */
+}
+
+.theme-toggle:hover {
+  transform: scale(1.2);
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
 }
