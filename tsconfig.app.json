@@ -7,10 +7,11 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
-    "noEmit": true,
     "isolatedModules": true,
     "strict": true,
-    "allowImportingTsExtensions": true // Garantindo que a importação de arquivos .tsx seja permitida
+    "allowImportingTsExtensions": true, // Garantindo que a importação de arquivos .tsx seja permitida
+    "composite": true, // Ativando a composição para referenciar esse projeto
+    "emitDeclarationOnly": true // Se não quiser gerar código, mas ainda gerar declarações
   },
   "include": ["src/**/*"]
 }
