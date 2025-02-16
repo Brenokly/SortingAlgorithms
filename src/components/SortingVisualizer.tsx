@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import "./SortingVisualizer.css";
 
 function SortingVisualizer() {
@@ -7,8 +6,8 @@ function SortingVisualizer() {
   const [isSorting, setIsSorting] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [timer, setTimer] = useState<ReturnType<typeof setInterval> | null>(null);
-  const [positions, setPositions] = useState<number[]>([]);
   const [activeIndices, setActiveIndices] = useState<number[]>([]);
+  const [isVisualizerMode, setIsVisualizerMode] = useState(true);
 
   useEffect(() => {
     resetArray();
@@ -16,11 +15,11 @@ function SortingVisualizer() {
 
   function resetArray(): void {
     if (isSorting) return;
-    let arr: number[] = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+    let arr: number[] = Array.from({ length: 20 }, () => Math.floor(Math.random() * 100));
     setArray(arr);
-    setPositions(arr.map((_, i) => i));
     setElapsedTime(0);
-    stopTimer(); // Parar o timer caso tenha sido iniciado antes
+    setActiveIndices([]);
+    stopTimer();
   }
 
   function startTimer(): void {
@@ -32,10 +31,13 @@ function SortingVisualizer() {
   }
 
   function stopTimer(): void {
-    if (timer) {
-      clearInterval(timer);
-      setTimer(null);
-    }
+    setTimer((prevTimer) => {
+      if (prevTimer !== null) {
+        clearInterval(prevTimer);
+        return null;
+      }
+      return prevTimer;
+    });
   }
 
   async function bubbleSort(): Promise<void> {
@@ -44,7 +46,6 @@ function SortingVisualizer() {
     startTimer();
 
     let arr = [...array];
-    let pos = [...positions];
     let len = arr.length;
     let swapped;
 
@@ -54,22 +55,18 @@ function SortingVisualizer() {
         setActiveIndices([j, j + 1]);
 
         if (arr[j] > arr[j + 1]) {
-          await new Promise((resolve) => setTimeout(resolve, 200));
-
           [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-          [pos[j], pos[j + 1]] = [pos[j + 1], pos[j]];
-
           setArray([...arr]);
-          setPositions([...pos]);
           swapped = true;
-          
-          await new Promise((resolve) => setTimeout(resolve, 200));
+
+          const delay = isVisualizerMode ? 600 : 100; // Aumenta a lentidão no modo visualizer
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
       if (!swapped) break;
     }
 
-    stopTimer(); // Parar o timer quando terminar
+    stopTimer();
     setIsSorting(false);
     setActiveIndices([]);
   }
@@ -86,19 +83,22 @@ function SortingVisualizer() {
         Ordenar
       </button>
 
+      <button
+        onClick={() => setIsVisualizerMode(!isVisualizerMode)}
+        className="btn"
+      >
+        {isVisualizerMode ? "Desativar Modo Visualizer" : "Ativar Modo Visualizer"}
+      </button>
+
       <div className="array-container">
         {array.map((value, idx) => (
-          <motion.div
+          <div
             key={idx}
-            animate={{
-              x: positions[idx] * 60,
-              y: activeIndices.includes(idx) ? [0, 20, 0] : 0,
-            }}
-            transition={{ type: "spring", stiffness: 80, damping: 10 }}
             className={`array-block ${activeIndices.includes(idx) ? "active" : ""}`}
+            style={{ left: `${idx * 60}px` }}
           >
             {value}
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
